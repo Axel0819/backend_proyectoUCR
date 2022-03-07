@@ -1,19 +1,10 @@
-const { getCourse, getCourses, createCourse, updateCourse, deleteCourse } = require('../controllers/course');
-const router= require('express').Router();
+import { Router } from 'express';
+import { getCourse, getCourses, createCourse, updateCourse, deleteCourse } from '../controllers/course.js';
 
-//find all coursess
-router.get('/', getCourses);
 
-//find one course
-router.get('/:id', getCourse);
+const router = Router();
 
-//create course
-router.post('/', createCourse);
+router.route('/').get(getCourses).post(createCourse);
+router.route('/:id').get(getCourse).put(updateCourse).delete(deleteCourse);
 
-//update course
-router.put('/:id', updateCourse);
-
-//delete course
-router.delete('/:id', deleteCourse);
-
-module.exports = router;
+export default router;

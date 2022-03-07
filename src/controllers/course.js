@@ -1,46 +1,53 @@
-const Course= require("../models/Course");
+import course from "../models/course.js";
 
-const getCourses = async(req, res) => {
-    const courses = await Course.findAll()
-    res.json(courses)
+export const getCourses = async(req, res) => {
+    const courses = await course.findAll();
+
+    res.json(courses);
 }
 
-const getCourse = async(req, res) => {
+export const getCourse = async(req, res) => {
     const { OMIModel } = req.params
-    const course = await Course.findByPk(OMIModel)
-    if(!course) return res.status(404).json({error: `No se encontro el cursos con el id ${OMIModel}`})
+    const course = await course.findByPk(OMIModel)
+    if(!course) return res.status(404).json({error: `No se encontró el curso con el id ${OMIModel}`})
     res.json(course)
 }
 
-const createCourse = async(req, res) => {
+export const createCourse = async(req, res) => {
     const { OMIModel, nameCourse, schedule, description, weeklyHours } = req.body
-    if(!OMIModel || !nameCourse || !schedule || !description || !weeklyHours) return res.status(400).json({error: 'Faltan datos'})
-    const course = await Course.create({OMIModel, nameCourse, schedule, description, weeklyHours})
-    res.status(201).json(course)
+
+    const response = await course.findOrCreate({
+        where: {OMIModel},
+        defaults: {OMIModel, nameCourse, schedule, description, weeklyHours}
+    });
+    res.json(response);
+
 }
 
-const updateCourse = async(req, res) => {
-    const { OMIModel } = req.params
-    const { nameCourse, schedule, description, weeklyHours } = req.body
-    if(!nameCourse || !schedule || !description || !weeklyHours) return res.status(400).json({error: 'Faltan datos'})
-    const course = await Course.update({nameCourse, schedule, description, weeklyHours}, {where: {OMIModel}})
+export const updateCourse = async(req, res) => {
+    const { OMIModel } = req.params;
+    const { body } = req;
+    const isExist = await course.findByPk(OMIModel);
+    
+    if(!isExist) return res.status(404).json({error: `No se encontró el curso con el id ${OMIModel}`})
+
+    const course = await course.update(body, {where: {OMIModel}});
+
     res.json(course)
 }
 
-//Verificar si se puede eliminar en dado caso que este relacionado con otra tabla
-const deleteCourse = async(req, res) => {
-    const { OMIModel } = req.params
-    const course = await Course.destroy({where: {OMIModel}})
-    res.json(course)
+//CHECK FLAG FIELD
+export const deleteCourse = async(req, res) => {
+    const { OMIModel } = req.params;
+    const isExist = await course.findByPk(OMIModel);
+
+    if(!isExist) return res.status(404).json({error: `No se encontró el curso con el id ${OMIModel}`})
+    
+    const course = await course.destroy({where: {OMIModel}});
+    
+    res.json(course);
 }
 
-module.exports = {
-    getCourses,
-    getCourse,
-    createCourse,
-    updateCourse,
-    deleteCourse
-}
 
 
     

@@ -1,25 +1,9 @@
-const express = require('express');
-const course = require('./src/routes/course');
-const app = express();
-const cors = require('cors');
-const dotenv = require('dotenv');
-const authConnection = require('./src/database/authenticate.connection');
+import dotenv  from 'dotenv';
+import Server from './src/models/server.js';
 
-// Load env vars
+//load env variables
 dotenv.config();
-const PORT = process.env.PORT || 3030;
 
-//db connection
-authConnection();
+const server= new Server();
 
-//Middlewares
-app.use(express.json());
-app.use(cors());
-
-//Using routes
-app.use('/course',course);
-
-//server connection
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-})
+server.listen();

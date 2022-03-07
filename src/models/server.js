@@ -1,0 +1,69 @@
+import express from 'express';
+import cors  from 'cors';
+import db  from "../database/db.config.js";
+
+//Routes
+//import enrolledStudentsRoutes from "../routes/enrolledStudents.js";
+import courseRoutes from "../routes/course.js";
+import courseLearningRoutes from "../routes/courseLearning.js";
+import courseCommentRoutes from "../routes/courseComments.js";
+import coursePriceRoutes from "../routes/coursePrice.js";
+import enrollmentPromotionRoutes from "../routes/enrollmentPromotion.js";
+import promotionCoursesRoutes from "../routes/promotionCourses.js";
+
+class Server{
+    app;
+    port;
+    apiPaths= {
+        course: '/api/course',
+        enrolledStudents: '/api/enrolledStudent',
+        courseLearning: '/api/courseLearning',
+        courseComment: '/api/courseComment',
+        coursePrice: '/api/coursePrice',
+        enrollmentPromotion: '/api/enrollmentPromotion',
+        promotionCourses: '/api/promotionCourses'
+    };
+
+    constructor(){
+        this.app = express();
+        this.port = process.env.PORT || '8000';
+
+        //load initial methods
+        this.dbConnection();
+        this.middlewares();
+        this.routes();
+    }
+
+    async dbConnection(){
+        try{
+            await db.authenticate();
+            await db.sync();
+            console.log('DB connected');
+        }catch(error){ throw new Error(error); }
+    }
+
+    middlewares(){
+        //CORS
+        this.app.use(cors());
+
+        //Reading body
+        this.app.use(express.json());
+    }
+
+    routes(){
+        //this.app.use(this.apiPaths.enrolledStudents, enrolledStudentsRoutes);
+        this.app.use(this.apiPaths.course, courseRoutes);
+        this.app.use(this.apiPaths.courseLearning, courseLearningRoutes);
+        this.app.use(this.apiPaths.courseComment, courseCommentRoutes);
+        this.app.use(this.apiPaths.coursePrice, coursePriceRoutes);
+        this.app.use(this.apiPaths.enrollmentPromotion, enrollmentPromotionRoutes);
+        this.app.use(this.apiPaths.promotionCourses, promotionCoursesRoutes);
+    }
+
+    listen(){
+        this.app.listen(this.port, () => console.log(`Server is running on port ${this.port}`));
+    }
+
+}
+
+export default Server;

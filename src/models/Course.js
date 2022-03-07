@@ -1,12 +1,13 @@
 
-const connection = require('../database/db.config');
-const { DataTypes } = require('sequelize');
+import connection from '../database/db.config.js';
+import { DataTypes } from 'sequelize';
 
-const Course = connection.define('course', {
+const course = connection.define('course', {
     OMIModel: {
         type: DataTypes.STRING,
         primaryKey: true,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     nameCourse: {
         type: DataTypes.STRING,
@@ -23,7 +24,10 @@ const Course = connection.define('course', {
     weeklyHours: {
         type: DataTypes.INTEGER,
         allowNull: false}
-},{timestamps: false}
+},{
+    indexes: [{fields: ['OMIModel']}],
+    timestamps: false
+}
 );
 
-module.exports = Course;
+export default course;

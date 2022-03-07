@@ -1,0 +1,38 @@
+import courseLearnings from "../models/courseLearnings.js";
+
+export const getCourseLearnings = async (req, res) => {
+    const { idCourse } = req.params;
+    const courseLearnings = await courseLearnings.findAll({ where: { idCourse }});
+
+    res.json(courseLearnings);
+}
+
+export const createLearning = async (req, res) => {
+    const { idCourse, description } = req.body;
+    const courseLearning = await courseLearnings.create({ idCourse, description });
+
+    res.json(courseLearning);
+}
+
+export const updateLearning = async (req, res) => {
+    const { idLearning } = req.params;
+    const { body } = req;
+    const isExist = await courseLearnings.findByPk(idLearning);
+    
+    if(!isExist) return res.status(404).json({error: `No se encontró el aprendizaje con el id ${idLearning}`});
+
+    const courseLearning = await courseLearnings.update( body, { where: { idLearning }});
+
+    res.json(courseLearning);
+};
+
+export const deleteLearning = async (req, res) => {
+    const { idLearning } = req.params;
+    const isExist = await courseLearnings.findByPk(idLearning);
+
+    if(!isExist) return res.status(404).json({error: `No se encontró el aprendizaje con el id ${idLearning}`});
+
+    const courseLearning = await courseLearnings.destroy({ where: { idLearning }});
+
+    res.json(courseLearning);
+}
