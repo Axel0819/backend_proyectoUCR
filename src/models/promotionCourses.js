@@ -19,8 +19,13 @@ const promotionCourses = connection.define('promotionCourse', {
     quotas:{
         type: DataTypes.INTEGER,
         allowNull: false
+    },
+    statusPromotionCourse:{
+        type: DataTypes.INTEGER,
+        defaultValue: 1,
+        allowNull: false
     }
-} , {timestamps: false});
+}, {timestamps: false});
 
 promotionCourses.removeAttribute('id');
 

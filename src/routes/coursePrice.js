@@ -1,15 +1,8 @@
-import {getAllCoursePrice, getCoursePrice, createCoursePrice, updateCoursePrice, deleteCoursePrice} from '../models/coursePrice.js';
+import { getAllCoursePrice, getCoursePriceById, createCoursePrice, updateCoursePrice, deleteCoursePrice } from '../models/coursePrice.js';
 import { Router } from "express";
 const router = Router();
 
-router.get("/", getAllCoursePrice);
-
-router.get("/:id", getCoursePrice);
-
-router.post("/", createCoursePrice);
-
-router.put("/:id", updateCoursePrice);
-
-router.delete("/:id", deleteCoursePrice);
+router.route('/').get(getAllCoursePrice).post(createCoursePrice);
+router.route('/:idPrice').get(getCoursePriceById).put(updateCoursePrice).delete(deleteCoursePrice);
 
 export default router;

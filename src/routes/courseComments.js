@@ -2,15 +2,10 @@ import {getAllComments, getCourseComments, createComment, updateComment, deleteC
 import { Router } from 'express';
 
 const router = Router();
+router.route('/').get(getAllComments).post(createComment);
 
-router.get('/', getAllComments);
+router.get('/:idCourse', getCourseComments);
 
-router.get('/:id', getCourseComments);
-
-router.post('/', createComment);
-
-router.put('/:id', updateComment);
-
-router.delete('/:id', deleteComment);
+router.route('/:idComment').put(updateComment).delete(deleteComment);
 
 export default router;

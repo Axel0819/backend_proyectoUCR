@@ -20,6 +20,7 @@ const courseLearnings = connection.define('courseLearning', {
         allowNull: false
     }
 },{
+    indexes: ['idLearning'],
     timestamps: false
 });
 

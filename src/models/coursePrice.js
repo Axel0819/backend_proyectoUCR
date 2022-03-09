@@ -30,6 +30,11 @@ const coursePrice = connection.define('coursePrice', {
     internationalRenewalPrice: {
         type: DataTypes.DECIMAL(4, 2),
         allowNull: false
+    },
+    priceStatus: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 1
     }
 }, {timestamps: false});
 

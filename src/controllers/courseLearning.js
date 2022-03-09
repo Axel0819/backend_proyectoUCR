@@ -1,10 +1,16 @@
 import courseLearnings from "../models/courseLearnings.js";
 
+
+export const getAllLearnings = async (req, res) => {
+    const allLearnings= await courseLearnings.findAll();
+    res.status(200).json(allLearnings);
+}
+
 export const getCourseLearnings = async (req, res) => {
     const { idCourse } = req.params;
     const courseLearnings = await courseLearnings.findAll({ where: { idCourse }});
 
-    res.json(courseLearnings);
+    res.status(200).json(courseLearnings);
 }
 
 export const createLearning = async (req, res) => {

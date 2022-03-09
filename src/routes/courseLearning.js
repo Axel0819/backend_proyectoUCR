@@ -1,19 +1,13 @@
-import { getCourseLearnings, createLearning, updateLearning, deleteLearning } from '../controllers/courseLearning.js';
+import { getAllLearnings, getCourseLearnings, createLearning, updateLearning, deleteLearning } from '../controllers/courseLearning.js';
 import { Router } from 'express';
 
 const router = Router();
 
-//find all course learnings by course id
-router.get('/:id', getCourseLearnings);
+router.route('/').get(getAllLearnings).post(createLearning);
 
-//create course learning
-router.post('/', createLearning);
+router.get('/:idCourse', getCourseLearnings);
 
-//update course learning
-router.put('/:id', updateLearning);
-
-//delete course learning
-router.delete('/:id', deleteLearning);
+router.route('/:idLearning').put(updateLearning).delete(deleteLearning);
 
 export default router;
 

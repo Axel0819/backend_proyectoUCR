@@ -23,9 +23,15 @@ const course = connection.define('course', {
     },
     weeklyHours: {
         type: DataTypes.INTEGER,
-        allowNull: false}
+        allowNull: false
+    },
+    courseStatus: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 1
+    }
 },{
-    indexes: [{fields: ['OMIModel']}],
+    indexes: ['OMIModel'],
     timestamps: false
 }
 );

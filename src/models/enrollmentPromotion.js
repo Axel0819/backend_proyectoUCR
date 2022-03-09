@@ -32,6 +32,11 @@ const enrollmentPromotion = connection.define('enrollmentPromotion', {
     endTime: {
         type: DataTypes.TIME,
         allowNull: false
+    },
+    promotionStatus: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 1,
     }
 }, { indexes:['enrollmentId'],timestamps: false});
 

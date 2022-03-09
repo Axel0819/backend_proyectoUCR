@@ -3,12 +3,9 @@ import { Router } from 'express';
 
 const router = Router();
 
-router.get('/:idPromotion', getPromotionCourses);
+router.route('/:id').get(getPromotionCourses).delete(deletePromotionCourse);
 
-router.post('/', createPromotionCourse);
+router.route('/').put(createPromotionCourse).post(updatePromotionCourse);
 
-router.put('/', updatePromotionCourse);
-
-router.delete('/', deletePromotionCourse);
 
 export default router;

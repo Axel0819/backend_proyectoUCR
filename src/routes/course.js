@@ -5,6 +5,6 @@ import { getCourse, getCourses, createCourse, updateCourse, deleteCourse } from 
 const router = Router();
 
 router.route('/').get(getCourses).post(createCourse);
-router.route('/:id').get(getCourse).put(updateCourse).delete(deleteCourse);
+router.route('/:OMIModel').get(getCourse).put(updateCourse).delete(deleteCourse);
 
 export default router;

@@ -14,10 +14,10 @@ export const getCourseComments = async (req, res) => {
 };
 
 export const createComment = async (req, res) => {
-    const { idCourse, description, persoName } = req.body;
-    const comment = await courseComments.create({ idCourse, description, persoName });
+    const { idCourse, comment, persoName } = req.body;
+    const response = await courseComments.create({ idCourse, comment, persoName });
 
-    res.json(comment);
+    res.status(201).json(response);
 }
 
 export const updateComment = async (req, res) => {
@@ -32,7 +32,6 @@ export const updateComment = async (req, res) => {
     res.json(comment);
 };
 
-//CHECK FLAGS IN THE MODEL
 export const deleteComment = async (req, res) => {
     const { idComment } = req.params;
     const isExist = await courseComments.findByPk(idComment);

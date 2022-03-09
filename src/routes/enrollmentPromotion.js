@@ -3,14 +3,8 @@ import { getEnrollmentPromotions, getEnrollmentPromotion, createEnrollmentPromot
 import { Router } from 'express';
 const router = Router();
 
-router.get('/', getEnrollmentPromotions);
+router.route('/').get(getEnrollmentPromotions).post(createEnrollmentPromotion);
 
-router.get('/:enrollmentId', getEnrollmentPromotion);
-
-router.post('/', createEnrollmentPromotion);
-
-router.put('/:enrollmentId', updateEnrollmentPromotion);
-
-router.delete('/:enrollmentId', deleteEnrollmentPromotion);
+router.route('/:id').get(getEnrollmentPromotion).put(updateEnrollmentPromotion).delete(deleteEnrollmentPromotion);
 
 export default router;

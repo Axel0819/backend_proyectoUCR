@@ -4,18 +4,14 @@ import { Router } from 'express';
 const router = Router();
 
 //find all enrolled students
-router.get('/', getEnrolledStudents);
+router.get('/allCourseStudents', getEnrolledStudents);
 
 //find one enrolled student
-router.get('/:id', getEnrolledStudent);
+router.get('/courseStudent', getEnrolledStudent);
 
 //create enrolled student
 router.post('/', createEnrolledStudent);
 
-//update enrolled student
-router.put('/:id', updateEnrolledStudent);
-
-//delete enrolled student
-router.delete('/:id', deleteEnrolledStudent);
+router.route('/:id').put(updateEnrolledStudent).delete(deleteEnrolledStudent);
 
 export default router;

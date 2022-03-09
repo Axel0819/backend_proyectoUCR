@@ -47,6 +47,7 @@ const enrolledStudent = connection.define('enrolledStudent', {
     },
     studentStatus: {
         type: DataTypes.INTEGER,
+        allowNull: false,
         defaultValue: 1,
     }
 },{

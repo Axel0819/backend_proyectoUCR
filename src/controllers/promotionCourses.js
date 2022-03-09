@@ -1,30 +1,30 @@
 import promotionCourses from '../models/promotionCourses.js';
 
 export const getPromotionCourses = async (req, res) => {
-    const { idPromotion } = req.params;
+    const { id : idPromotion } = req.params;
     const courses = await promotionCourses.findAll({ where: { idPromotion }});
 
-    res.json(courses);
+    res.status(200).json(courses);
 }
-
+//CHECK IF THE COURSE IS ALREADY IN THE PROMOTION
 export const createPromotionCourse = async (req, res) => {
     const { idCourse, idPromotion, quotas } = req.body;
     const course = await promotionCourses.create({ idCourse, idPromotion, quotas });
 
-    res.json(course);
+    res.status(201).json(course);
 }
 
 export const updatePromotionCourse = async (req, res) => {
     const { idCourse, idPromotion, quotas } = req.body;
     const course = await promotionCourses.update({ idCourse, idPromotion, quotas }, { where: { idCourse, idPromotion }});
 
-    res.json(course);
+    res.status(200).json(course);
 }
 
-//CHECK FLAGS IN THE MODEL
 export const deletePromotionCourse = async (req, res) => {
-    const { idCourse, idPromotion } = req.body;
-    const course = await promotionCourses.destroy({ where: { idCourse, idPromotion }});
+    const { id : idCourse } = req.params;
+    const {idPromotion } = req.body;
+    const course = await promotionCourses.update({ statusPromotionCourse: 0 }, { where: { idCourse, idPromotion }});
 
-    res.json(course);
+    res.status(200).json(course);
 }

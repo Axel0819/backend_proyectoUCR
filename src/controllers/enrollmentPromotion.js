@@ -3,11 +3,11 @@ import enrollmentPromotion from "../models/enrollmentPromotion.js";
 export const getEnrollmentPromotions = async(req, res) => {
     const enrollmentPromotions = await enrollmentPromotion.findAll();
 
-    res.json(enrollmentPromotions);
+    res.status(200).json(enrollmentPromotions);
 };
 
 export const getEnrollmentPromotion = async(req, res) => {
-    const { enrollmentId } = req.params;
+    const { id : enrollmentId } = req.params;
     const enrollmentPromotion = await enrollmentPromotion.findByPk(enrollmentId);
     if(!enrollmentPromotion) return res.status(404).json({error: `No se encontró la promoción de matrícula con el id ${enrollmentId}`})
     res.json(enrollmentPromotion);
@@ -21,7 +21,7 @@ export const createEnrollmentPromotion = async(req, res) => {
 };
 
 export const updateEnrollmentPromotion = async(req, res) => {
-    const { enrollmentId } = req.params;
+    const { id : enrollmentId } = req.params;
     const { body } = req;
     const isExist = await enrollmentPromotion.findByPk(enrollmentId);
     
@@ -33,12 +33,12 @@ export const updateEnrollmentPromotion = async(req, res) => {
 };
 
 export const deleteEnrollmentPromotion = async(req, res) => {
-    const { enrollmentId } = req.params;
+    const { id : enrollmentId } = req.params;
     const isExist = await enrollmentPromotion.findByPk(enrollmentId);
 
     if(!isExist) return res.status(404).json({error: `No se encontró la promoción de matrícula con el id ${enrollmentId}`})
     
-    const enrollmentPromotion = await enrollmentPromotion.destroy({where: {enrollmentId}});
+    const enrollmentPromotion = await enrollmentPromotion.update({promotionStatus: 0}, {where: {enrollmentId}});
     
     res.json(enrollmentPromotion);
 };

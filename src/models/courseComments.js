@@ -28,6 +28,9 @@ const courseComments = connection.define('courseComment', {
         type: DataTypes.DATEONLY,
         defaultValue: DataTypes.NOW,
     }
-}, {timestamps: false});
+}, {
+    indexes: ['idComment'],
+    timestamps: false
+});
 
 export default courseComments;
