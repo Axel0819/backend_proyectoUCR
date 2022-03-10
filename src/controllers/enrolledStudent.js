@@ -10,6 +10,10 @@ export const getEnrolledStudents = async (req, res) => {
             studentStatus: 1
         }
     });
+
+    if (!enrolledStudents) {
+        return res.status(404).json({ message: 'No se encontraron estudiantes inscritos' });
+    }
     res.status(200).json(enrolledStudents);
 }
 
@@ -36,6 +40,9 @@ export const createEnrolledStudent = async (req, res) => {
         where: { ID_Student, ID_Course, id_promotion },
         defaults: { ID_Student, ID_Course, id_promotion, nameStudent, firstSurname, secondSurname, email, phone }
     });
+    // if(register[1]){
+    //     return res.status(201).json({ message: 'Estudiante inscrito correctamente' });
+    // }
     //check if the student is already enrolled to choose the correct status code
     res.status(201).json(register);
 }

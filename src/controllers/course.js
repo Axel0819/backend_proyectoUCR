@@ -2,15 +2,22 @@ import course from "../models/course.js";
 
 export const getCourses = async(req, res) => {
     const courses = await course.findAll({where: {courseStatus: 1}});
+    if(!courses){
+        return res.status(204).json({
+            message: "No hay cursos registrados"
+        });
 
-    res.json(courses);
+    }
+    res.status(200).json(courses);
 }
 
 export const getCourse = async(req, res) => {
     const { OMIModel } = req.params
-    const course = await course.findByPk(OMIModel)
-    if(!course) return res.status(404).json({error: `No se encontró el curso con el id ${OMIModel}`})
-    res.json(course);
+    const course = await course.findByPk(OMIModel);
+
+    if(!course) return res.status(404).json({error: `No se encontró el curso con el id ${OMIModel}`});
+    
+    res.status(200).json(course);
 }
 
 export const createCourse = async(req, res) => {
@@ -34,7 +41,7 @@ export const updateCourse = async(req, res) => {
 
     const course = await course.update(body, {where: {OMIModel}}, {new: true});
 
-    res.json(course);
+    res.status(200).json(course);
 }
 
 export const deleteCourse = async(req, res) => {
@@ -45,7 +52,7 @@ export const deleteCourse = async(req, res) => {
     
     const course = await course.update({courseStatus: 0}, {where: {OMIModel}});
     
-    res.json(course);
+    res.status(200).json(course);
 }
 
 

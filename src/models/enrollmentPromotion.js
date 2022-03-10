@@ -8,11 +8,6 @@ const enrollmentPromotion = connection.define('enrollmentPromotion', {
         defaultValue: DataTypes.UUIDV4,
         allowNull: false,
     },
-    statusPromotion: {
-        type: DataTypes.INTEGER,
-        defaultValue: 1,
-        allowNull: false
-    },
     namePromotion: {
         type: DataTypes.STRING,
         allowNull: false

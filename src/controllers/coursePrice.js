@@ -1,15 +1,22 @@
 import coursePrice from "../models/coursePrice.js";
 
 export const getAllCoursePrice = async (req, res) => {
-    const pricesData = await coursePrice.findAll();
+    const pricesData = await coursePrice.findAll({
+        where: { priceStatus : 1 }
+    });
 
+    if(!pricesData){
+        return res.status(404).json({message: "No se encontraron precios"});
+    }
     res.status(200).json(pricesData);
 };
 
 export const getCoursePriceById = async (req, res) => {
     const { idPrice } = req.params;
     const priceData = await coursePrice.findOne({ where: { idPrice }});
-
+    if(!priceData){
+        return res.status(404).json({message: "No se encontró el precio"});
+    }
     res.status(200).json(priceData);
 };
 
@@ -38,7 +45,7 @@ export const deleteCoursePrice = async (req, res) => {
 
     if(!isExist) return res.status(404).json({error: `No se encontró la tarifa con el id ${idPrice}`});
 
-    const price = await courseComments.update({ priceStatus: 0 }, { where: { idComment }});
+    const price = await courseComments.update({ priceStatus: 0 }, { where: { idPrice }});
 
     res.status(200).json(price);
 };

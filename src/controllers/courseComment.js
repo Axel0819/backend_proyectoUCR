@@ -2,16 +2,25 @@ import courseComments from "../models/courseComments.js";
 
 export const getAllComments = async (req, res) => {
     const comments = await courseComments.findAll();
-
-    res.json(comments);
-};
+    if(!comments) {
+        return res.status(404).json({
+            message: "No se encontraron comentarios"
+        });
+    }
+    res.status(200).json(comments);
+}
 
 export const getCourseComments = async (req, res) => {
     const { idCourse } = req.params;
+    //check if the course exists
     const comments = await courseComments.findAll({ where: { idCourse }});
-
-    res.json(comments);
-};
+    if(!comments) {
+        return res.status(404).json({
+            message: "No se encontraron comentarios"
+        });
+    }
+    res.status(200).json(comments);
+}
 
 export const createComment = async (req, res) => {
     const { idCourse, comment, persoName } = req.body;
@@ -29,8 +38,8 @@ export const updateComment = async (req, res) => {
 
     const comment = await courseComments.update( body, { where: { idComment }});
 
-    res.json(comment);
-};
+    res.status(200).json(comment);
+}
 
 export const deleteComment = async (req, res) => {
     const { idComment } = req.params;
@@ -40,5 +49,5 @@ export const deleteComment = async (req, res) => {
 
     const comment = await courseComments.destroy({ where: { idComment }});
 
-    res.json(comment);
-};
+    res.status(200).json(comment);
+}
