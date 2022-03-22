@@ -11,15 +11,12 @@ router.route('/').get(getAllLearnings).post([
     fieldsValidate
 ],createLearning);
 
-router.get('/:idCourse', [
-    check('idCourse', 'El id del curso es requerido').trim().notEmpty().escape(),
-    fieldsValidate
-],getCourseLearnings);
+router.get('/:idCourse',getCourseLearnings);
 
-router.route('/:idLearning',[
-    check('idLearning', 'El id del aprendizaje es requerido').trim().notEmpty().escape(),
+router.route('/:idLearning').put([
+    check('description', 'La descripción es requerida').trim().notEmpty().escape(),
     fieldsValidate
-]).put(updateLearning).delete(deleteLearning);
+],updateLearning).delete(deleteLearning);
 
 export default router;
 

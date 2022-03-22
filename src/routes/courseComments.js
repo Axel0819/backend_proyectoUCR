@@ -4,21 +4,20 @@ import { fieldsValidate } from '../middlewares/fieldsValidate.js';
 import { check } from 'express-validator';
 
 const router = Router();
+
 router.route('/').get(getAllComments).post([
     check('idCourse', 'El id del curso es requerido').trim().notEmpty().escape(),
     check('comment', 'El comentario es requerido').trim().notEmpty().escape(),
     check('persoName', 'El nombre del usuario es requerido').trim().notEmpty().escape(),
-    ,fieldsValidate
+    fieldsValidate
 ],createComment);
 
-router.get('/:idCourse',[
-    check('idCourse', 'El id del curso es requerido').trim().notEmpty().escape(),
-    fieldsValidate
-], getCourseComments);
+router.get('/:idCourse', getCourseComments);
 
-router.route('/:idComment',[
-    check('idComment', 'El id del comentario es requerido').trim().notEmpty().escape(),
+router.route('/:idComment').put([
+    check('comment', 'El comentario es requerido').trim().notEmpty().escape(),
+    check('persoName', 'El nombre del usuario es requerido').trim().notEmpty().escape(),
     fieldsValidate
-]).put(updateComment).delete(deleteComment);
+],updateComment).delete(deleteComment);
 
 export default router;

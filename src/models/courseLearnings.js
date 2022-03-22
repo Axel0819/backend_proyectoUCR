@@ -3,15 +3,15 @@ import { DataTypes } from 'sequelize';
 
 const courseLearnings = connection.define('courseLearning', {
     idLearning: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER.UNSIGNED,
         primaryKey: true,
         autoIncrement: true
     },
     idCourse: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER.UNSIGNED,
         references: {
-            model: 'courses',
-            key: 'OMIModel'
+            model: 'course',
+            key: 'idCourse'
         },
         allowNull: false
     },
@@ -20,7 +20,8 @@ const courseLearnings = connection.define('courseLearning', {
         allowNull: false
     }
 },{
-    indexes: ['idLearning'],
+    freezeTableName: true,
+    indexes: [{fields:['idLearning']}],
     timestamps: false
 });
 

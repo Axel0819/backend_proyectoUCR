@@ -1,37 +1,33 @@
 import connection from '../database/db.config.js';
 import { DataTypes } from 'sequelize';
 
-const courseComments = connection.define('courseComment', {
-    idComment: {
+const coursePdf = connection.define('coursePdf', {
+    idCoursePdf: {
         type: DataTypes.INTEGER.UNSIGNED,
         primaryKey: true,
         autoIncrement: true,
-        allowNull: false
+        allowNull: false,
     },
-    idCourse: {
+    idCourse:{
         type: DataTypes.INTEGER.UNSIGNED,
         references: {
             model: 'course',
             key: 'idCourse'
         },
-        allowNull: false
+        allowNull: false,
     },
-    comment: {
-        type: DataTypes.TEXT,
-        allowNull: false
-    },
-    persoName: {
+    urlPdf: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    creatAt: {
-        type: DataTypes.DATEONLY,
-        defaultValue: DataTypes.NOW,
+    idPdfCloudinary: {
+        type: DataTypes.STRING,
+        allowNull: false
     }
-}, {
+},{
     freezeTableName: true,
-    indexes: [{fields:['idComment']}],
+    indexes: [{fields:['idCoursePdf']}],
     timestamps: false
 });
 
-export default courseComments;
+export default coursePdf;

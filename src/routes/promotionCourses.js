@@ -5,23 +5,25 @@ import { fieldsValidate } from '../middlewares/fieldsValidate.js';
 
 const router = Router();
 
-router.route('/:id').get([
-    check('id', 'El id de la promoción es requerido').notEmpty(),
-    fieldsValidate
-],getPromotionCourses).delete([
-    check('id', 'El id del curso es requerido').notEmpty(),
-    fieldsValidate
-],deletePromotionCourse);
+router.route('/:id').get(getPromotionCourses).delete(deletePromotionCourse);
 
 router.put('/:id', [
-    check('idCourse', 'El id del curso es requerido').notEmpty(),
+    check('totalQuotas', 'La cantidad de cupos es requerida').trim().notEmpty().escape(),
+    check('classDays', 'Laos días/hora de clase son requeridos').trim().notEmpty().escape(),
+    check('startDate', 'La fecha de inicio es requerida').trim().notEmpty().escape(),
+    check('endDate', 'La fecha de fin es requerida').trim().notEmpty().escape(),
+    check('place', 'El lugar es requerido').trim().notEmpty().escape(),
     fieldsValidate
 ], updatePromotionCourse);
 
 router.post('/', [
-    check('idCourse', 'El id del curso es requerido').notEmpty(),
-    check('idPromotion', 'El id de la promoción es requerido').notEmpty(),
-    check('quotas', 'La cantidad de cupos es requerida').notEmpty(),
+    check('idCourse', 'El id del curso es requerido').trim().notEmpty().escape(),
+    check('idPromotion', 'El id de la promoción es requerido').trim().notEmpty().escape(),
+    check('totalQuotas', 'La cantidad de cupos es requerida').trim().notEmpty().escape(),
+    check('classDays', 'Laos días/hora de clase son requeridos').trim().notEmpty().escape(),
+    check('startDate', 'La fecha de inicio es requerida').trim().notEmpty().escape(),
+    check('endDate', 'La fecha de fin es requerida').trim().notEmpty().escape(),
+    check('place', 'El lugar es requerido').trim().notEmpty().escape(),
     fieldsValidate
 ],createPromotionCourse);
 

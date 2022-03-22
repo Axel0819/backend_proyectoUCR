@@ -33,6 +33,9 @@ const enrollmentPromotion = connection.define('enrollmentPromotion', {
         allowNull: false,
         defaultValue: 1,
     }
-}, { indexes:['enrollmentId'],timestamps: false});
+}, {
+    freezeTableName: true,
+    indexes:[{fields:['enrollmentId']}],
+    timestamps: false});
 
 export default enrollmentPromotion;

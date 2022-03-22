@@ -1,50 +1,55 @@
+import expressAsyncHandler from "express-async-handler";
 import enrollmentPromotion from "../models/enrollmentPromotion.js";
 
-export const getEnrollmentPromotions = async(req, res) => {
+export const getEnrollmentPromotions = expressAsyncHandler(async(req, res) => {
     const enrollmentPromotions = await enrollmentPromotion.findAll({where: { promotionStatus: 1 }});
-    if(!enrollmentPromotions){
+    if(enrollmentPromotions.length === 0){
         return res.status(204).json({
             message: "No hay promociones registradas"
         });
 
     }
     res.status(200).json(enrollmentPromotions);
-}
+})
 
-export const getEnrollmentPromotion = async(req, res) => {
-    const { id : enrollmentId } = req.params;
-    const enrollmentPromotion = await enrollmentPromotion.findByPk(enrollmentId);
-    if(!enrollmentPromotion) return res.status(404).json({error: `No se encontró la promoción de matrícula con el id ${enrollmentId}`});
+export const getEnrollmentPromotion = expressAsyncHandler(async(req, res) => {
+    const { enrollmentId } = req.params;
+    const promotion = await enrollmentPromotion.findOne({where: {enrollmentId, promotionStatus: 1}});
 
-    res.status(200).json(enrollmentPromotion);
-}
+    if(!promotion) return res.status(404).json({error: `No existe promoción con id ${enrollmentId}`});
 
-export const createEnrollmentPromotion = async(req, res) => {
+    res.status(200).json(promotion);
+})
+
+export const createEnrollmentPromotion = expressAsyncHandler(async(req, res) => {
     const { namePromotion, startDate, endDate, startTime, endTime } = req.body;
-    const response = await enrollmentPromotion.create({namePromotion, startDate, endDate, startTime, endTime});
+    const validate = await enrollmentPromotion.findOne({where: {namePromotion, promotionStatus: 1}});
+    
+    if(validate) return res.status(409).json({message: "Ya existe una promoción con ese nombre"});
 
-    res.status(201).json(response);
-}
+    const promotion = await enrollmentPromotion.create({namePromotion, startDate, endDate, startTime, endTime});
+    res.status(201).json(promotion);
+})
 
-export const updateEnrollmentPromotion = async(req, res) => {
-    const { id : enrollmentId } = req.params;
+export const updateEnrollmentPromotion = expressAsyncHandler(async(req, res) => {
+    const { enrollmentId } = req.params;
     const { body } = req;
-    const isExist = await enrollmentPromotion.findByPk(enrollmentId);
+    const isExist = await enrollmentPromotion.findByPk(enrollmentId, {where: {promotionStatus: 1}});
     
-    if(!isExist) return res.status(404).json({error: `No se encontró la promoción de matrícula con el id ${enrollmentId}`})
+    if(!isExist) return res.status(404).json({message: `No existe promoción con id ${enrollmentId}`})
 
-    const enrollmentPromotion = await enrollmentPromotion.update(body, {where: {enrollmentId}});
+    const promotionUpdated= await enrollmentPromotion.update(body, {where: {enrollmentId}});
 
-    res.status(200).json(enrollmentPromotion);
-}
+    res.status(200).json(promotionUpdated);
+})
 
-export const deleteEnrollmentPromotion = async(req, res) => {
-    const { id : enrollmentId } = req.params;
-    const isExist = await enrollmentPromotion.findByPk(enrollmentId);
+export const deleteEnrollmentPromotion = expressAsyncHandler(async(req, res) => {
+    const { enrollmentId } = req.params;
+    const isExist = await enrollmentPromotion.findOne({where: {enrollmentId:enrollmentId,promotionStatus: 1}});
 
-    if(!isExist) return res.status(404).json({error: `No se encontró la promoción de matrícula con el id ${enrollmentId}`})
+    if(!isExist) return res.status(404).json({message: `No existe promoción con id ${enrollmentId}`})
     
-    const enrollmentPromotion = await enrollmentPromotion.update({promotionStatus: 0}, {where: {enrollmentId}});
+    const promotionDeleted= await enrollmentPromotion.update({promotionStatus: 0}, {where: {enrollmentId}});
     
-    res.status(200).json(enrollmentPromotion);
-}
+    res.status(200).json(promotionDeleted);
+})

@@ -1,93 +1,61 @@
 import enrolledStudent from '../models/enrolledStudent.js';
+import expressAsyncHandler from "express-async-handler";
 
-export const getEnrolledStudents = async (req, res) => {
-    //params from url we need
-    const { ID_Course, id_promotion } = req.query;
-    const enrolledStudents = await enrolledStudent.findAll({
-        where: {
-            ID_Course,
-            id_promotion,
-            studentStatus: 1
-        }
-    });
+export const getStudentsByPromotion= expressAsyncHandler(async(req, res) => {
+    const { id:idPromotion } = req.params;
+    const enrolledStudents = await enrolledStudent.findAll( {where: {idPromotion,studentStatus: 1}} );
 
-    if (!enrolledStudents) {
-        return res.status(404).json({ message: 'No se encontraron estudiantes inscritos' });
+    if(enrolledStudents.length > 0) {
+        return res.status(200).json(enrolledStudents);
     }
-    res.status(200).json(enrolledStudents);
-}
 
-export const getEnrolledStudent = async (req, res) => {
-    //params from url we need
-    const { ID_Student, ID_Course, id_promotion } = req.query;
-    const enrolledStudent = await enrolledStudent.findByPk(ID_Student, {
-        where: {
-            ID_Course,
-            id_promotion,
-            studentStatus: 1
-        }
-    });
+    res.status(404).json({ message: 'No se encontraron estudiantes inscritos' });
+})
 
-    if (!enrolledStudent) return res.status(404).json({ error: `No se encontró el estudiante con el id ${ID_Student}` });
+export const getStudentsByCourse = expressAsyncHandler(async(req, res) => {
+    const { id:idPromotionCourse } = req.params;
+    const enrolledStudents= await enrolledStudent.findAll( {where: {idPromotionCourse,studentStatus: 1}});
+    
+    if (enrolledStudents.length > 0) {
+        return res.status(200).json(enrolledStudents);
+    }
+    
+    res.status(404).json({ message: 'No se encontraron estudiantes inscritos' });
+})
 
-    res.status(200).json(enrolledStudent);
-}
-
-export const createEnrolledStudent = async (req, res) => {
-    const { ID_Student, ID_Course, id_promotion, nameStudent, firstSurname, secondSurname, email, phone } = req.body;
+export const createEnrolledStudent = expressAsyncHandler(async(req, res) => {
+    const { idNumber, idPromotionCourse, idPromotion, nameStudent, firstSurname, secondSurname, email, phone } = req.body;
 
     const register = await enrolledStudent.findOrCreate({
-        where: { ID_Student, ID_Course, id_promotion },
-        defaults: { ID_Student, ID_Course, id_promotion, nameStudent, firstSurname, secondSurname, email, phone }
+        where: { idNumber, idPromotionCourse },
+        defaults: { idNumber, idPromotionCourse, idPromotion, nameStudent, firstSurname, secondSurname, email, phone }
     });
-    // if(register[1]){
-    //     return res.status(201).json({ message: 'Estudiante inscrito correctamente' });
-    // }
-    //check if the student is already enrolled to choose the correct status code
-    res.status(201).json(register);
-}
 
-export const updateEnrolledStudent = async (req, res) => {
-    const { id : ID_Student } = req.params;
+    if(register[1]){
+        return res.status(201).json(register[0]);
+    }
+        
+    res.status(409).json({ message: 'Estudiante ya inscrito' })
+})
+
+export const updateEnrolledStudent = expressAsyncHandler(async(req, res) => {
+    const { id : idEnrolledStudent } = req.params;
     const { body } = req;
-    const { ID_Course, id_promotion } = body;
-    const isExist = await enrolledStudent.findByPk(ID_Student,{
-            where: {
-                ID_Course,
-                id_promotion
-            }
-        });
+    const isExist = await enrolledStudent.findByPk(idEnrolledStudent);
 
-    if(!isExist) return res.status(404).json({error: `No se encontró el estudiante con el id ${ID_Student}`});
+    if(!isExist) return res.status(404).json({error: `No se encontró el estudiante con el id ${idEnrolledStudent}`});
 
-    //check if i need to update all students with the same ID_Student
-    const enrolledStudent = await enrolledStudent.update(body, { where: { ID_Student, id_promotion }});
+    const studentUpdated= await enrolledStudent.update(body, {where: {idEnrolledStudent}});
+    res.status(200).json(studentUpdated);
+})
 
-    res.status(200).json(enrolledStudent);
-}
-
-//C
-export const deleteEnrolledStudent = async (req, res) => {
-    //CHECK IF I SEND A BODY
-    const { id : ID_Student } = req.params;
-    const { ID_Course, id_promotion } = req.body;   
-    const isExist = await enrolledStudent.findByPk(ID_Student,
-        {
-            where: {
-                ID_Course,
-                id_promotion
-            }
-        });
+export const deleteEnrolledStudent = expressAsyncHandler(async(req, res) => {
+    const { id : idEnrolledStudent } = req.params;
+    const isExist = await enrolledStudent.findByPk(idEnrolledStudent);
     
-    if(!isExist) return res.status(404).json({error: `No se encontró el estudiante con el id ${ID_Student}`});
+    if(!isExist) return res.status(404).json({error: `No se encontró el estudiante con el id ${idEnrolledStudent}`});
 
-    const student = await enrolledStudent.update({ studentStatus: 0 }, { 
-        where:
-        { 
-            ID_Student,
-            ID_Course,
-            id_promotion
-         }});
+    const studentDeleted= await enrolledStudent.update({ studentStatus: 0 }, {where: {idEnrolledStudent}});
 
-    res.status(200).json(student);
-}
+    res.status(200).json(studentDeleted);
+})

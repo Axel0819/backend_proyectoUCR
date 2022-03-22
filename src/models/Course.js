@@ -3,17 +3,20 @@ import connection from '../database/db.config.js';
 import { DataTypes } from 'sequelize';
 
 const course = connection.define('course', {
-    OMIModel: {
-        type: DataTypes.STRING,
+    idCourse: {
+        type: DataTypes.INTEGER.UNSIGNED,
         primaryKey: true,
-        allowNull: false,
-        unique: true
-    },
-    nameCourse: {
-        type: DataTypes.STRING,
+        autoIncrement: true,
         allowNull: false
     },
-    schedule:{
+    idPrice:{
+        type: DataTypes.INTEGER.UNSIGNED,
+        references: {
+            model: 'coursePrice',
+            key: 'idPrice'
+        }
+    },
+    nameCourse: {
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -21,8 +24,12 @@ const course = connection.define('course', {
         type: DataTypes.TEXT,
         allowNull: false
     },
-    weeklyHours: {
+    totalHours: {
         type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    category: {
+        type: DataTypes.STRING,
         allowNull: false
     },
     courseStatus: {
@@ -31,7 +38,8 @@ const course = connection.define('course', {
         defaultValue: 1
     }
 },{
-    indexes: ['OMIModel'],
+    freezeTableName: true,
+    indexes: [{fields:['idCourse']}],
     timestamps: false
 }
 );

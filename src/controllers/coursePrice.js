@@ -1,51 +1,50 @@
 import coursePrice from "../models/coursePrice.js";
+import expressAsyncHandler from "express-async-handler";
 
-export const getAllCoursePrice = async (req, res) => {
-    const pricesData = await coursePrice.findAll({
-        where: { priceStatus : 1 }
-    });
+export const getAllCoursePrice = expressAsyncHandler(async(req, res) => {
+    const pricesData = await coursePrice.findAll();
 
-    if(!pricesData){
-        return res.status(404).json({message: "No se encontraron precios"});
+    if(pricesData.length === 0){
+        return res.status(204).json({message: "No hay tarifas registradas"});
     }
     res.status(200).json(pricesData);
-};
+})
 
-export const getCoursePriceById = async (req, res) => {
+export const getCoursePriceById = expressAsyncHandler(async(req, res) => {
     const { idPrice } = req.params;
     const priceData = await coursePrice.findOne({ where: { idPrice }});
     if(!priceData){
-        return res.status(404).json({message: "No se encontró el precio"});
+        return res.status(404).json({message: `No se encontró la tarifa con id ${idPrice}`});
     }
     res.status(200).json(priceData);
-};
+})
 
-export const createCoursePrice = async (req, res) => {
-    const { idCourse, nationalPrice, nationalRenewalPrice, internationalPrice, internationalRenewalPrice } = req.body;
-    const priceData = await coursePrice.create({ idCourse, nationalPrice, nationalRenewalPrice, internationalPrice, internationalRenewalPrice });
-
+export const createCoursePrice = expressAsyncHandler(async(req, res) => {
+    const { nationalPrice, nationalRenewalPrice, internationalPrice, internationalRenewalPrice } = req.body;
+    const priceData = await coursePrice.create({nationalPrice, nationalRenewalPrice, internationalPrice, internationalRenewalPrice});
+    
     res.status(201).json(priceData);
-}
+})
 
-export const updateCoursePrice = async (req, res) => {
+export const updateCoursePrice = expressAsyncHandler(async(req, res) => {
     const { idPrice } = req.params;
     const { body } = req;
-    const isExist = await courseComments.findByPk(idPrice);
+    const isExist = await coursePrice.findByPk(idPrice);
 
     if(!isExist) return res.status(404).json({error: `No se encontró la tarifa con el id ${idPrice}`});
 
-    const price = await courseComments.update( body, { where: { idComment }});
+    const priceUpdated= await coursePrice.update( body, { where: { idPrice }});
 
-    res.status(200).json(price);
-};
+    res.status(200).json(priceUpdated);
+})
 
-export const deleteCoursePrice = async (req, res) => {
+export const deleteCoursePrice = expressAsyncHandler(async(req, res) => {
     const { idPrice } = req.params;
-    const isExist = await courseComments.findByPk(idPrice);
+    const isExist = await coursePrice.findByPk(idPrice);
 
     if(!isExist) return res.status(404).json({error: `No se encontró la tarifa con el id ${idPrice}`});
 
-    const price = await courseComments.update({ priceStatus: 0 }, { where: { idPrice }});
+    const priceDeleted= await coursePrice.destroy({ where: { idPrice }});
 
-    res.status(200).json(price);
-};
+    res.status(200).json(priceDeleted);
+})

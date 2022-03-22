@@ -1,9 +1,10 @@
 import connection from '../database/db.config.js';
 import { DataTypes } from 'sequelize';
+import useBcrypt from 'sequelize-bcrypt';
 
 const user = connection.define('user', {
     idUser: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER.UNSIGNED,
         primaryKey: true,
         autoIncrement: true
     },
@@ -21,6 +22,12 @@ const user = connection.define('user', {
         allowNull: false,
         defaultValue: 1
     }
-},{timestamps: false});
+},{
+    freezeTableName: true,
+    timestamps: false
+});
+
+useBcrypt(user, { fields: ['password'] });
+// user.authenticate()
 
 export default user;

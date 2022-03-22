@@ -3,39 +3,30 @@ import { DataTypes } from 'sequelize';
 
 const coursePrice = connection.define('coursePrice', {
     idPrice: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER.UNSIGNED,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false
     },
-    idCourse: {
-        type: DataTypes.STRING,
-        references: {
-            model: 'courses',
-            key: 'OMIModel'
-        },
-    },
     nationalPrice: {
-        type: DataTypes.DECIMAL(4, 2),
+        type: DataTypes.DECIMAL(6, 2).UNSIGNED,
         allowNull: false,    
     },
     nationalRenewalPrice: {
-        type: DataTypes.DECIMAL(4, 2),
+        type: DataTypes.DECIMAL(6, 2).UNSIGNED,
         allowNull: false
     },
     internationalPrice: {
-        type: DataTypes.DECIMAL(4, 2),
+        type: DataTypes.DECIMAL(6, 2).UNSIGNED,
         allowNull: false
     },
     internationalRenewalPrice: {
-        type: DataTypes.DECIMAL(4, 2),
+        type: DataTypes.DECIMAL(6, 2).UNSIGNED,
         allowNull: false
-    },
-    priceStatus: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        defaultValue: 1
     }
-}, {timestamps: false});
+}, {
+    freezeTableName: true,
+    indexes: [{fields:['idPrice']}],
+    timestamps: false});
 
 export default coursePrice;

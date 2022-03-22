@@ -1,27 +1,31 @@
 import connection from '../database/db.config.js';
 import { DataTypes } from 'sequelize';
 
-
-//CHECK DETAILS
 const enrolledStudent = connection.define('enrolledStudent', {
-    ID_Student: {
+    idEnrolledStudent: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false
+    },
+    idNumber: {
         type: DataTypes.STRING,
         primaryKey: true,
         allowNull: false
     },
-    ID_Course: {
-        type: DataTypes.STRING,
+    idPromotionCourse: {
+        type: DataTypes.INTEGER.UNSIGNED,
         references: {
-            model: 'courses',
-            key: 'OMIModel'
+            model: 'promotionCourse',
+            key: 'idPromotionCourse'
         },
         allowNull: false
     },
-    id_promotion: {
+    idPromotion: {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
-            model: 'enrollmentPromotions',
+            model: 'enrollmentPromotion',
             key: 'enrollmentId'
         }
     },
@@ -51,6 +55,8 @@ const enrolledStudent = connection.define('enrolledStudent', {
         defaultValue: 1,
     }
 },{
+    freezeTableName: true,
+    indexes: [{fields:['idEnrolledStudent']}],
     timestamps: false
 });
 
