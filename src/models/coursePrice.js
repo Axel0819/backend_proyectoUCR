@@ -23,6 +23,11 @@ const coursePrice = connection.define('coursePrice', {
     internationalRenewalPrice: {
         type: DataTypes.DECIMAL(6, 2).UNSIGNED,
         allowNull: false
+    },
+    priceStatus: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 1
     }
 }, {
     freezeTableName: true,

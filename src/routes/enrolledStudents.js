@@ -11,6 +11,7 @@ router.get('/courseStudents/:id',getStudentsByCourse);
 
 router.post('/', [
     check('idNumber', 'El id del estudiante es requerido').trim().notEmpty().escape(),
+    check('identificationType', 'El tipo de identificación es requerido').trim().notEmpty().escape(),
     check('idPromotionCourse', 'El id del curso es requerido').trim().notEmpty().escape(),
     check('idPromotion', 'El id de la promoción es requerido').trim().notEmpty().escape(),
     check('nameStudent', 'El nombre del estudiante es requerido').trim().notEmpty().escape(),
@@ -23,6 +24,7 @@ router.post('/', [
 
 router.route('/:id').put([
     check('idNumber', 'El id del estudiante es requerido').trim().notEmpty().escape(),
+    check('identificationType', 'El tipo de identificación es requerido').trim().notEmpty().escape(),
     check('nameStudent', 'El nombre del estudiante es requerido').trim().notEmpty().escape(),
     check('firstSurname', 'El primer apellido del estudiante es requerido').trim().notEmpty().escape(),
     check('secondSurname', 'El segundo apellido del estudiante es requerido').trim().notEmpty().escape(),

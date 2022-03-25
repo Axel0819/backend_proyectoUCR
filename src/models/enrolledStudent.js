@@ -13,6 +13,10 @@ const enrolledStudent = connection.define('enrolledStudent', {
         primaryKey: true,
         allowNull: false
     },
+    identificationType: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     idPromotionCourse: {
         type: DataTypes.INTEGER.UNSIGNED,
         references: {

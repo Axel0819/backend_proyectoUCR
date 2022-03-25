@@ -13,6 +13,8 @@ import enrollmentPromotionRoutes from "../routes/enrollmentPromotion.js";
 import promotionCoursesRoutes from "../routes/promotionCourses.js";
 import uploadRoutes from "../routes/upload.js";
 import contactRoutes from "../routes/contact.js";
+import filterRoutes from "../routes/filter.js";
+import electoralListRoutes from "../routes/electoralList.js";
 
 class Server{
     app;
@@ -26,7 +28,9 @@ class Server{
         enrollmentPromotion: '/api/enrollmentPromotion',
         promotionCourses: '/api/promotionCourses',
         contact: '/api/contact',
-        upload: '/api/upload'
+        upload: '/api/upload',
+        filter: '/api/filter',
+        electoralList: '/api/electoralList'
     };
 
     constructor(){
@@ -65,6 +69,8 @@ class Server{
         this.app.use(this.apiPaths.promotionCourses, promotionCoursesRoutes);
         this.app.use(this.apiPaths.upload, uploadRoutes);
         this.app.use(this.apiPaths.contact, contactRoutes);
+        this.app.use(this.apiPaths.filter, filterRoutes);
+        this.app.use(this.apiPaths.electoralList, electoralListRoutes);
         this.app.use(errorHandler);
     }
 

@@ -1,9 +1,12 @@
 import enrolledStudent from '../models/enrolledStudent.js';
+import promotionCourses from '../models/promotionCourses.js';
 import expressAsyncHandler from "express-async-handler";
+import { Op } from 'sequelize';
+import { status } from '../enum/status.js';
 
 export const getStudentsByPromotion= expressAsyncHandler(async(req, res) => {
     const { id:idPromotion } = req.params;
-    const enrolledStudents = await enrolledStudent.findAll( {where: {idPromotion,studentStatus: 1}} );
+    const enrolledStudents = await enrolledStudent.findAll( {where: {idPromotion,studentStatus: status.active}} );
 
     if(enrolledStudents.length > 0) {
         return res.status(200).json(enrolledStudents);
@@ -14,8 +17,8 @@ export const getStudentsByPromotion= expressAsyncHandler(async(req, res) => {
 
 export const getStudentsByCourse = expressAsyncHandler(async(req, res) => {
     const { id:idPromotionCourse } = req.params;
-    const enrolledStudents= await enrolledStudent.findAll( {where: {idPromotionCourse,studentStatus: 1}});
-    
+    const enrolledStudents= await enrolledStudent.findAll( {where: {idPromotionCourse,studentStatus: status.active}});
+
     if (enrolledStudents.length > 0) {
         return res.status(200).json(enrolledStudents);
     }
@@ -24,14 +27,23 @@ export const getStudentsByCourse = expressAsyncHandler(async(req, res) => {
 })
 
 export const createEnrolledStudent = expressAsyncHandler(async(req, res) => {
-    const { idNumber, idPromotionCourse, idPromotion, nameStudent, firstSurname, secondSurname, email, phone } = req.body;
+    const { idNumber, identificationType, idPromotionCourse, idPromotion, nameStudent, firstSurname, secondSurname, email, phone } = req.body;
+    const { availableQuotas }= await promotionCourses.findOne({ where: { idPromotionCourse, statusPromotionCourse: {
+        [Op.ne]: status.deleted
+    } }});
+
+    if(availableQuotas === 0){
+        promotionCourses.update({ statusPromotionCourse: status.inactive}, { where: { idPromotionCourse }});
+        return res.status(409).json({ message: 'No hay cupos disponibles' });
+    }
 
     const register = await enrolledStudent.findOrCreate({
         where: { idNumber, idPromotionCourse },
-        defaults: { idNumber, idPromotionCourse, idPromotion, nameStudent, firstSurname, secondSurname, email, phone }
+        defaults: { idNumber, identificationType, idPromotionCourse, idPromotion, nameStudent, firstSurname, secondSurname, email, phone }
     });
 
     if(register[1]){
+        promotionCourses.update({ availableQuotas: availableQuotas - 1 }, { where: { idPromotionCourse }});
         return res.status(201).json(register[0]);
     }
         
@@ -55,7 +67,7 @@ export const deleteEnrolledStudent = expressAsyncHandler(async(req, res) => {
     
     if(!isExist) return res.status(404).json({error: `No se encontró el estudiante con el id ${idEnrolledStudent}`});
 
-    const studentDeleted= await enrolledStudent.update({ studentStatus: 0 }, {where: {idEnrolledStudent}});
+    const studentDeleted= await enrolledStudent.update({ studentStatus: status.deleted }, {where: {idEnrolledStudent}});
 
     res.status(200).json(studentDeleted);
 })

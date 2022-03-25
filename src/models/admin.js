@@ -2,8 +2,8 @@ import connection from '../database/db.config.js';
 import { DataTypes } from 'sequelize';
 import useBcrypt from 'sequelize-bcrypt';
 
-const user = connection.define('user', {
-    idUser: {
+const admin = connection.define('admin', {
+    idAdmin: {
         type: DataTypes.INTEGER.UNSIGNED,
         primaryKey: true,
         autoIncrement: true
@@ -17,7 +17,7 @@ const user = connection.define('user', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    userStatus: {
+    adminStatus: {
         type: DataTypes.INTEGER,
         allowNull: false,
         defaultValue: 1
@@ -27,7 +27,7 @@ const user = connection.define('user', {
     timestamps: false
 });
 
-useBcrypt(user, { fields: ['password'] });
+useBcrypt(admin, { fields: ['password'] });
 // user.authenticate()
 
-export default user;
+export default admin;

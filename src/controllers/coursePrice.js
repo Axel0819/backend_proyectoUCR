@@ -1,5 +1,6 @@
 import coursePrice from "../models/coursePrice.js";
 import expressAsyncHandler from "express-async-handler";
+import { status } from "../enum/status.js";
 
 export const getAllCoursePrice = expressAsyncHandler(async(req, res) => {
     const pricesData = await coursePrice.findAll();
@@ -44,7 +45,7 @@ export const deleteCoursePrice = expressAsyncHandler(async(req, res) => {
 
     if(!isExist) return res.status(404).json({error: `No se encontró la tarifa con el id ${idPrice}`});
 
-    const priceDeleted= await coursePrice.destroy({ where: { idPrice }});
+    const priceDeleted= await coursePrice.update({priceStatus: status.deleted}, {where: {idPrice}});
 
     res.status(200).json(priceDeleted);
 })

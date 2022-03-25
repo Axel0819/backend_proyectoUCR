@@ -1,9 +1,10 @@
 import course from "../models/course.js";
 import expressAsyncHandler from "express-async-handler";
+import { status } from "../enum/status.js";
 
 //0:deleted, 1:open, 2:close
 export const getCourses = expressAsyncHandler(async(req, res) => {
-    const courses = await course.findAll({where: {courseStatus: 1}});
+    const courses = await course.findAll({where: {courseStatus: status.active}});
     if(courses.length === 0) {
         return res.status(204).json({
             message: "No hay cursos registrados"
@@ -67,7 +68,7 @@ export const deleteCourse = expressAsyncHandler(async(req, res) => {
     if(!isExist) return res.status(404).json({error: `No se encontró el curso con el id ${idCourse}`})
     
     //response= 1: delete, 0: no delete
-    const courseDeleted= await course.update({courseStatus: 0}, {where: {idCourse}});
+    const courseDeleted= await course.update({courseStatus: status.deleted}, {where: {idCourse}});
     res.status(200).json(courseDeleted);
 })
 

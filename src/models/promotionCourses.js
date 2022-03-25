@@ -1,6 +1,7 @@
 import connection from '../database/db.config.js';
 import { DataTypes } from 'sequelize';
-
+//statusPromotionCourse->0: deleted, 1: active, 2: inactive
+//CHECK SCHEDULE FIELD-->FIELD FORMAT: L10 y k11-Ene 2022
 const promotionCourses = connection.define('promotionCourse', {
     idPromotionCourse: {
         type: DataTypes.INTEGER.UNSIGNED,
@@ -27,19 +28,10 @@ const promotionCourses = connection.define('promotionCourse', {
         allowNull: false
     },
     availableQuotas: {
-        type: DataTypes.INTEGER(3),
-        allowNull: false
+        type: DataTypes.INTEGER(3)
     },
     schedule:{
         type: DataTypes.STRING,
-        allowNull: false
-    },
-    startDate:{
-        type: DataTypes.DATEONLY,
-        allowNull: false
-    },
-    endDate:{
-        type: DataTypes.DATEONLY,
         allowNull: false
     },
     place:{
@@ -52,6 +44,11 @@ const promotionCourses = connection.define('promotionCourse', {
         allowNull: false
     }
 }, {
+    hooks: {
+        beforeCreate: (promotionCourse, options) => {
+            promotionCourse.availableQuotas= promotionCourse.totalQuotas;
+        }
+    },
     freezeTableName: true,
     indexes: [{fields:['idPromotionCourse']}],
     timestamps: false});
