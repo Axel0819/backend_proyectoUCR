@@ -14,7 +14,6 @@ import promotionCoursesRoutes from "../routes/promotionCourses.js";
 import uploadRoutes from "../routes/upload.js";
 import contactRoutes from "../routes/contact.js";
 import filterRoutes from "../routes/filter.js";
-import electoralListRoutes from "../routes/electoralList.js";
 
 class Server{
     app;
@@ -70,7 +69,6 @@ class Server{
         this.app.use(this.apiPaths.upload, uploadRoutes);
         this.app.use(this.apiPaths.contact, contactRoutes);
         this.app.use(this.apiPaths.filter, filterRoutes);
-        this.app.use(this.apiPaths.electoralList, electoralListRoutes);
         this.app.use(errorHandler);
     }
 

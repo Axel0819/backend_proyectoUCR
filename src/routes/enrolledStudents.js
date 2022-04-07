@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import { check } from 'express-validator';
 import { fieldsValidate } from '../middlewares/fieldsValidate.js';
-import { getStudentsByPromotion, getStudentsByCourse, createEnrolledStudent, updateEnrolledStudent, deleteEnrolledStudent, autocompleteStudentData } from '../controllers/enrolledStudent.js';
+import { getStudentsByPromotion, getStudentsByCourse, createEnrolledStudent, updateEnrolledStudent, deleteEnrolledStudent, } from '../controllers/enrolledStudent.js';
+import { autocompleteStudentData } from '../controllers/electoralList.js';
 
 const router = Router();
 
