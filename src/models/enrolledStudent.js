@@ -9,12 +9,12 @@ const enrolledStudent = connection.define('enrolledStudent', {
         allowNull: false
     },
     idNumber: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(15),
         primaryKey: true,
         allowNull: false
     },
     identificationType: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER(1),
         allowNull: false
     },
     idPromotionCourse: {
@@ -34,34 +34,32 @@ const enrolledStudent = connection.define('enrolledStudent', {
         }
     },
     nameStudent: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(20),
         allowNull: false
     },
     firstSurname: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(30),
         allowNull: false
     },
     secondSurname: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(30),
         allowNull: false
     },
     email: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(35),
         allowNull: false
     },
     phone: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(15),
         allowNull: false
     },
     studentStatus: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue: 1,
     }
 },{
-    freezeTableName: true,
     indexes: [{fields:['idEnrolledStudent']}],
-    timestamps: false
 });
 
 export default enrolledStudent;

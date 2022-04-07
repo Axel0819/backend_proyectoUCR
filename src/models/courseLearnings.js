@@ -20,9 +20,7 @@ const courseLearnings = connection.define('courseLearning', {
         allowNull: false
     }
 },{
-    freezeTableName: true,
     indexes: [{fields:['idLearning']}],
-    timestamps: false
 });
 
 export default courseLearnings;

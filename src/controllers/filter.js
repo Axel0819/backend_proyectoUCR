@@ -38,3 +38,16 @@ export const filterCourses = expressAsyncHandler(async(req, res) => {
     res.status(200).json(courses);
     
 })
+
+export const filterCourseByName = expressAsyncHandler(async(req, res) => {
+    const { name }= req.params;
+    const courses= await course.findAll({
+        where: {
+            nameCourse: {
+                [Op.substring]: `${name}`
+            }
+        },
+        attributes: ["idCourse", "nameCourse"]
+    });
+    res.status(200).json(courses);
+})

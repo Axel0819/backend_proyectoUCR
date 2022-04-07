@@ -17,17 +17,15 @@ const courseImage = connection.define('courseImage', {
         allowNull: false,
     },
     urlImage: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(150),
         allowNull: false
     },
     idCloudinaryImage: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(35),
         allowNull: false
     }
 },{
-    freezeTableName: true,
     indexes: [{fields:['idCourseImage']}],
-    timestamps: false
 });
 
 export default courseImage;

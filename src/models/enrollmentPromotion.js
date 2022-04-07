@@ -9,7 +9,7 @@ const enrollmentPromotion = connection.define('enrollmentPromotion', {
         allowNull: false,
     },
     namePromotion: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(30),
         allowNull: false
     },
     startDate: {
@@ -29,13 +29,12 @@ const enrollmentPromotion = connection.define('enrollmentPromotion', {
         allowNull: false
     },
     promotionStatus: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue: 1,
     }
 }, {
-    freezeTableName: true,
     indexes:[{fields:['enrollmentId']}],
-    timestamps: false});
+});
 
 export default enrollmentPromotion;

@@ -17,7 +17,7 @@ const course = connection.define('course', {
         }
     },
     nameCourse: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(50),
         allowNull: false
     },
     description: {
@@ -25,22 +25,20 @@ const course = connection.define('course', {
         allowNull: false
     },
     totalHours: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER(3),
         allowNull: false
     },
     category: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(15),
         allowNull: false
     },
     courseStatus: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue: 1
     }
 },{
-    freezeTableName: true,
-    indexes: [{fields:['idCourse']}],
-    timestamps: false
+    indexes: [{fields:['idCourse']}]
 }
 );
 

@@ -1,13 +1,15 @@
 import { Router } from 'express';
 import { check } from 'express-validator';
 import { fieldsValidate } from '../middlewares/fieldsValidate.js';
-import { getStudentsByPromotion, getStudentsByCourse, createEnrolledStudent, updateEnrolledStudent, deleteEnrolledStudent } from '../controllers/enrolledStudent.js';
+import { getStudentsByPromotion, getStudentsByCourse, createEnrolledStudent, updateEnrolledStudent, deleteEnrolledStudent, autocompleteStudentData } from '../controllers/enrolledStudent.js';
 
 const router = Router();
 
 router.get('/promotionStudents/:id',getStudentsByPromotion);
 
 router.get('/courseStudents/:id',getStudentsByCourse);
+
+router.get('/autocompleteStudentData/:id',autocompleteStudentData);
 
 router.post('/', [
     check('idNumber', 'El id del estudiante es requerido').trim().notEmpty().escape(),

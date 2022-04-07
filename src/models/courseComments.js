@@ -21,7 +21,7 @@ const courseComments = connection.define('courseComment', {
         allowNull: false
     },
     persoName: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(20),
         allowNull: false
     },
     creatAt: {
@@ -29,9 +29,7 @@ const courseComments = connection.define('courseComment', {
         defaultValue: DataTypes.NOW,
     }
 }, {
-    freezeTableName: true,
     indexes: [{fields:['idComment']}],
-    timestamps: false
 });
 
 export default courseComments;

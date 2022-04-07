@@ -9,15 +9,15 @@ const contact = connection.define('contact', {
         allowNull: false
     },
     name: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(20),
         allowNull: false
     },
     firstSurname: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(30),
         allowNull: false
     },
     secondSurname: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(30),
         allowNull: false
     },
     message:{
@@ -25,11 +25,11 @@ const contact = connection.define('contact', {
         allowNull: false
     },
     email: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(35),
         allowNull: false
     },
     phone: {
-        type: DataTypes.STRING(12),
+        type: DataTypes.STRING(15),
         allowNull: false
     },
     createdAt: {
@@ -38,9 +38,7 @@ const contact = connection.define('contact', {
         allowNull: false,
     }
 },{
-    freezeTableName: true,
-    indexes: [{fields:['idContact']}],
-    timestamps: false
+    indexes: [{fields:['idContact']}]
 });
 
 export default contact;

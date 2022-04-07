@@ -17,17 +17,15 @@ const coursePdf = connection.define('coursePdf', {
         allowNull: false,
     },
     urlPdf: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(150),
         allowNull: false
     },
     idPdfCloudinary: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(35),
         allowNull: false
     }
 },{
-    freezeTableName: true,
     indexes: [{fields:['idCoursePdf']}],
-    timestamps: false
 });
 
 export default coursePdf;

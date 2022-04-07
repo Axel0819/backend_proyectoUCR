@@ -31,15 +31,15 @@ const promotionCourses = connection.define('promotionCourse', {
         type: DataTypes.INTEGER(3)
     },
     schedule:{
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(15),
         allowNull: false
     },
     place:{
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(20),
         allowNull: false
     },
     statusPromotionCourse:{
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER(1),
         defaultValue: 1,
         allowNull: false
     }
@@ -49,9 +49,8 @@ const promotionCourses = connection.define('promotionCourse', {
             promotionCourse.availableQuotas= promotionCourse.totalQuotas;
         }
     },
-    freezeTableName: true,
     indexes: [{fields:['idPromotionCourse']}],
-    timestamps: false});
+});
 
 
 export default promotionCourses;

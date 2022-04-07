@@ -25,13 +25,12 @@ const coursePrice = connection.define('coursePrice', {
         allowNull: false
     },
     priceStatus: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue: 1
     }
 }, {
-    freezeTableName: true,
     indexes: [{fields:['idPrice']}],
-    timestamps: false});
+});
 
 export default coursePrice;

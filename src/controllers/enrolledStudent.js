@@ -1,5 +1,6 @@
 import enrolledStudent from '../models/enrolledStudent.js';
 import promotionCourses from '../models/promotionCourses.js';
+import electoralList from '../models/electoralList.js';
 import expressAsyncHandler from "express-async-handler";
 import { Op } from 'sequelize';
 import { status } from '../enum/status.js';
@@ -35,8 +36,7 @@ export const createEnrolledStudent = expressAsyncHandler(async(req, res) => {
     if(availableQuotas === 0){
         promotionCourses.update({ statusPromotionCourse: status.inactive}, { where: { idPromotionCourse }});
         return res.status(409).json({ message: 'No hay cupos disponibles' });
-    }
-
+    } 
     const register = await enrolledStudent.findOrCreate({
         where: { idNumber, idPromotionCourse },
         defaults: { idNumber, identificationType, idPromotionCourse, idPromotion, nameStudent, firstSurname, secondSurname, email, phone }
@@ -70,4 +70,10 @@ export const deleteEnrolledStudent = expressAsyncHandler(async(req, res) => {
     const studentDeleted= await enrolledStudent.update({ studentStatus: status.deleted }, {where: {idEnrolledStudent}});
 
     res.status(200).json(studentDeleted);
+})
+
+export const autocompleteStudentData= expressAsyncHandler(async(req, res)=>{
+    const { id }= req.params;
+    const isExist = await electoralList.findByPk(id);
+    return isExist ? res.status(200).json(isExist) : res.status(404).json({error: `No se encontró una persona con id ${id}`});
 })

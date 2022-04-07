@@ -9,22 +9,19 @@ const admin = connection.define('admin', {
         autoIncrement: true
     },
     username: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(12),
         allowNull: false,
         unique: true
     },
     password: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(30),
         allowNull: false
     },
     adminStatus: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue: 1
     }
-},{
-    freezeTableName: true,
-    timestamps: false
 });
 
 useBcrypt(admin, { fields: ['password'] });
