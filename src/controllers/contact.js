@@ -1,21 +1,30 @@
-import contact from '../models/contact.js';
 import expressAsyncHandler from "express-async-handler";
+import nodemailer from "nodemailer";
 
-export const getContacts = expressAsyncHandler(async(req, res) => {
-    const contacts = await contact.findAll();
-    if(contacts.length === 0) {
-        return res.status(204).json({
-            message: "No hay registros"
-        });
-
+export const sendEmail= expressAsyncHandler(async(req,res)=> {
+    const destinationEmail= "chavarriamontoyaaxel@gmail.com";
+    const passwEmail= "uhtilfjhowbxtqxl";
+    const { body:contactParts }= req;
+    const transporter= nodemailer.createTransport({
+        service: "gmail",
+        auth:{
+            user: destinationEmail,
+            pass: passwEmail
+        }
+    });
+    const mailOptions= {
+        from: contactParts.email,
+        to: destinationEmail,
+        subject: `Consulta de ${contactParts.name} ${contactParts.firstSurname} ${contactParts.secondSurname}`,
+        text: `${contactParts.message}
+                Contacto cliente: ${contactParts.phone}`
     }
-    res.status(200).json(contacts);
+
+    transporter.sendMail(mailOptions, (error, info)=>{
+        if(error){
+            console.log(error)
+        }else{
+            res.status(201).json(info.response);
+        }
+    })
 })
-
-export const createContact = expressAsyncHandler(async(req, res) => {
-    const { body } = req;
-    const response = await contact.create(body);
-
-    res.status(201).json(response);
-})
-

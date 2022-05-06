@@ -4,16 +4,16 @@ import db  from "../database/db.config.js";
 import errorHandler from "../middlewares/error.js";
 
 //Routes
-import enrolledStudentsRoutes from "../routes/enrolledStudents.js";
-import courseRoutes from "../routes/course.js";
-import courseLearningRoutes from "../routes/courseLearning.js";
-import courseCommentRoutes from "../routes/courseComments.js";
-import coursePriceRoutes from "../routes/coursePrice.js";
-import enrollmentPromotionRoutes from "../routes/enrollmentPromotion.js";
-import promotionCoursesRoutes from "../routes/promotionCourses.js";
-import uploadRoutes from "../routes/upload.js";
+// import enrolledStudentsRoutes from "../routes/enrolledStudents.js";
+// import courseRoutes from "../routes/course.js";
+// import courseLearningRoutes from "../routes/courseLearning.js";
+// import courseCommentRoutes from "../routes/courseComments.js";
+// import coursePriceRoutes from "../routes/coursePrice.js";
+// import enrollmentPromotionRoutes from "../routes/enrollmentPromotion.js";
+// import promotionCoursesRoutes from "../routes/promotionCourses.js";
+// import uploadRoutes from "../routes/upload.js";
+// import filterRoutes from "../routes/filter.js";
 import contactRoutes from "../routes/contact.js";
-import filterRoutes from "../routes/filter.js";
 
 class Server{
     app;
@@ -37,7 +37,7 @@ class Server{
         this.port = process.env.PORT || '8000';
 
         //load initial methods
-        this.dbConnection();
+        //this.dbConnection();
         this.middlewares();
         this.routes();
     }
@@ -59,16 +59,16 @@ class Server{
     }
 
     routes(){
-        this.app.use(this.apiPaths.course, courseRoutes);
-        this.app.use(this.apiPaths.courseLearning, courseLearningRoutes);
-        this.app.use(this.apiPaths.courseComment, courseCommentRoutes);
-        this.app.use(this.apiPaths.coursePrice, coursePriceRoutes);
-        this.app.use(this.apiPaths.enrollmentPromotion, enrollmentPromotionRoutes);
-        this.app.use(this.apiPaths.enrolledStudents, enrolledStudentsRoutes);
-        this.app.use(this.apiPaths.promotionCourses, promotionCoursesRoutes);
-        this.app.use(this.apiPaths.upload, uploadRoutes);
+        // this.app.use(this.apiPaths.course, courseRoutes);
+        // this.app.use(this.apiPaths.courseLearning, courseLearningRoutes);
+        // this.app.use(this.apiPaths.courseComment, courseCommentRoutes);
+        // this.app.use(this.apiPaths.coursePrice, coursePriceRoutes);
+        // this.app.use(this.apiPaths.enrollmentPromotion, enrollmentPromotionRoutes);
+        // this.app.use(this.apiPaths.enrolledStudents, enrolledStudentsRoutes);
+        // this.app.use(this.apiPaths.promotionCourses, promotionCoursesRoutes);
+        // this.app.use(this.apiPaths.upload, uploadRoutes);
+        // this.app.use(this.apiPaths.filter, filterRoutes);
         this.app.use(this.apiPaths.contact, contactRoutes);
-        this.app.use(this.apiPaths.filter, filterRoutes);
         this.app.use(errorHandler);
     }
 
