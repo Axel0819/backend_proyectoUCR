@@ -54,7 +54,7 @@ class Server{
         //CORS
         const corsOptions={
             credentials: true,
-            methods:"POST",
+            methods:["POST", "GET"],
             origin: process.env.HEROKUPATH|| "*"
         }
         this.app.use(cors(corsOptions));
