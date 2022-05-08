@@ -15,7 +15,8 @@ export const sendEmail= expressAsyncHandler(async(req,res)=> {
         to: process.env.MAILUSER,
         subject: `Consulta ${contactParts.name} ${contactParts.firstSurname} ${contactParts.secondSurname}  🚢`,
         html:   `<h3>${contactParts.message}</h3>
-                <h4>Contacto: ${contactParts.phone}</h4>`
+                <h4>Número celular: ${contactParts.phone}</h4>
+                <h4>Correo: ${contactParts.email}</h4>`
     }
 
     transporter.sendMail(mailOptions, (error, info)=>{
