@@ -52,7 +52,12 @@ class Server{
 
     middlewares(){
         //CORS
-        this.app.use(cors());
+        const corsOptions={
+            credentials: true,
+            methods:"POST",
+            origin: process.env.HEROKUPATH|| "*"
+        }
+        this.app.use(cors(corsOptions));
 
         //Reading body
         this.app.use(express.json());

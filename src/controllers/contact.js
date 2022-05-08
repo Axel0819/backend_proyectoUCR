@@ -2,22 +2,20 @@ import expressAsyncHandler from "express-async-handler";
 import nodemailer from "nodemailer";
 
 export const sendEmail= expressAsyncHandler(async(req,res)=> {
-    const destinationEmail= "chavarriamontoyaaxel@gmail.com";
-    const passwEmail= "uhtilfjhowbxtqxl";
     const { body:contactParts }= req;
     const transporter= nodemailer.createTransport({
         service: "gmail",
         auth:{
-            user: destinationEmail,
-            pass: passwEmail
-        }
+            user: process.env.MAILUSER,
+            pass: process.env.MAILPASSW
+        },
     });
     const mailOptions= {
         from: contactParts.email,
-        to: destinationEmail,
-        subject: `Consulta de ${contactParts.name} ${contactParts.firstSurname} ${contactParts.secondSurname}`,
-        text: `${contactParts.message}
-                Contacto cliente: ${contactParts.phone}`
+        to: process.env.MAILUSER,
+        subject: `Consulta ${contactParts.name} ${contactParts.firstSurname} ${contactParts.secondSurname}  🚢`,
+        html:   `<h3>${contactParts.message}</h3>
+                <h4>Contacto: ${contactParts.phone}</h4>`
     }
 
     transporter.sendMail(mailOptions, (error, info)=>{
